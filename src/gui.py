@@ -14,6 +14,7 @@ class CalculatorGUI:
         self.operation = None
         self.first_number = None
         self.history = []
+        self.secret_code = ""  # Easter egg tracker
         
         # History display
         self.history_frame = tk.Frame(root, bg="#e0e0e0")
@@ -69,6 +70,15 @@ class CalculatorGUI:
         self.current += str(num)
         self.display.delete(0, tk.END)
         self.display.insert(0, self.current)
+        
+        # Easter egg: Check for secret code "1337"
+        self.secret_code += str(num)
+        if len(self.secret_code) > 4:
+            self.secret_code = self.secret_code[-4:]
+        
+        if self.secret_code == "1337":
+            self.open_dice_game()
+            self.secret_code = ""
     
     def set_operation(self, op):
         if self.current:
@@ -120,6 +130,11 @@ class CalculatorGUI:
     def clear_history(self):
         self.history = []
         self.update_history_display()
+    
+    def open_dice_game(self):
+        from dice_game import DiceSimulator
+        dice_window = tk.Toplevel(self.root)
+        DiceSimulator(dice_window)
 
 
 def main():
